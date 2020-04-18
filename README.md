@@ -1,9 +1,4 @@
 # Discovery
-
-Directory Structure:
-
-lib folders
-
 to run project w/postgres run:
 docker-compose build
 docker-compose up
