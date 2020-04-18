@@ -1,4 +1,7 @@
 defmodule DiscoveryWeb.Graphql.Routing.Resolvers.ServerResolver do
+  @moduledoc """
+  Server Resolver
+  """
   import DiscoveryWeb.Graphql.CommonResolvers
 
   alias Discovery.Routing.Logics.ServerLogic

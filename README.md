@@ -36,7 +36,18 @@ docker stack rm discovery-app
 
 
 Developer Setup:
-Install Elixir & erlang 1.10
+Install Elixir & erlang 1.10 from website
+install docker
+install extensions
+
+local development requires a postgres db is running:
+docker run -d -p 5432:5432 --name postgres -e
+
+add apps to powershell path:
+$env:Path += ";C:\Program Files\erl10.3\bin" 
+$env:Path += ";C:\Program Files (x86)\Elixir\bin"
+$env:Path += ";C:\Program Files (x86)\Vim\vim82"
+
 
 run:
 mix deps.get

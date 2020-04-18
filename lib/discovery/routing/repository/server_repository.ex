@@ -7,8 +7,8 @@ defmodule Discovery.Routing.Repositories.ServerRepository do
   alias Discovery.Repo
 
   alias Discovery.CommonQueries
-  alias Discovery.Routing.Schemas.ServerSchema
   alias Discovery.Routing.Queries.ServerQueries
+  alias Discovery.Routing.Schemas.ServerSchema
 
   @doc """
   Returns the list of servers. (shouldn't really be used very much)

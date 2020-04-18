@@ -1,4 +1,7 @@
 defmodule DiscoveryWeb.Graphql.Routing.Schemas.ServerSchema do
+  @moduledoc """
+  server schema
+  """
   use Absinthe.Schema.Notation
 
   alias DiscoveryWeb.Graphql.Routing.Resolvers.ServerResolver
