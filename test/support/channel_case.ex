@@ -15,6 +15,8 @@ defmodule DiscoveryWeb.ChannelCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       # Import conveniences for testing with channels
@@ -26,10 +28,10 @@ defmodule DiscoveryWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Discovery.Repo)
+    :ok = Sandbox.checkout(Discovery.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Discovery.Repo, {:shared, self()})
+      Sandbox.mode(Discovery.Repo, {:shared, self()})
     end
 
     :ok
