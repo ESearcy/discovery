@@ -1,59 +1,58 @@
-name: Continuous Integration
-on: [push]
+name: CI
 
-# This workflow will build and test a Phoenix application that uses
-# PostgreSQL as a database. Will also cache dependencies and build
-# artifacts to speed up the build.
+on: push
+
 jobs:
   test:
-    env:
-      MIX_ENV: ci
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    name: OTP ${{ matrix.otp }} | Elixir ${{ matrix.elixir }} | Node ${{ matrix.node }} | OS ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        otp: [22.2.4]
+        elixir: [1.10.0]
+        node: [12.x]
 
     services:
       db:
+        image: postgres:11
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        image: postgres:latest
-        ports: ['5432:5432']
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          POSTGRES_DB: discovery_test
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Recover dependency cache
-        uses: actions/cache@v1
-        id: deps_cache
+      - uses: actions/checkout@v1.0.0
+
+      - uses: actions/cache@v1
         with:
           path: deps
-          key: ${{ runner.OS }}-deps-${{ hashFiles('**/mix.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-deps-${{ env.cache-name }}-
-            ${{ runner.OS }}-deps-
-            ${{ runner.OS }}-
-      - name: Recover build cache
-        uses: actions/cache@v1
+          key: dependencies-${{ hashFiles('mix.lock') }}
+
+      - uses: actions/cache@v1
         with:
           path: _build
-          key: ${{ runner.OS }}-build-${{ env.cache-name }}
-          restore-keys: |
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
-      - uses: actions/setup-elixir@v2
+          key: build-${{ hashFiles('mix.lock') }}
+      - uses: actions/setup-elixir@v1.0.0
         with:
-          otp-version: 22.x
-          elixir-version: 1.9.x
-      - uses: nanasess/setup-chromedriver@master
-      - name: Install Dependencies
-        run: mix deps.get
-      - run: mix compile
-      - run: mix ecto.migrate
-      - run: npm install
-        working-directory: ./assets
-      - run: npm run deploy --prefix ./assets
-      - run: mix test --trace
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          yarn --cwd assets install
+      - name: Run tests
+        run: |
+          mix compile --warnings-as-errors
+          mix format --check-formatted
+          mix test
+        env:
+          MIX_ENV: test
