@@ -1,4 +1,7 @@
 defmodule DiscoveryWeb.Graphql.Schema.MasterSchema do
+  @moduledoc """
+  Graphql schema file, used for adding mutations/queries and subscriptions
+  """
   use Absinthe.Schema
 
   # import_types(Absinthe.Type.Custom)

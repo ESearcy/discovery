@@ -1,4 +1,5 @@
 defmodule Discovery.Release do
+  @moduledoc false
   @app :demo
 
   def migrate do

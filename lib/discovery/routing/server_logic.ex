@@ -1,4 +1,7 @@
 defmodule Discovery.Routing.Logics.ServerLogic do
+  @moduledoc """
+  in charge of delegating api calls for servers
+  """
   alias Discovery.Routing.Repositories.ServerRepository
 
   def process_server_ping(attrs) do

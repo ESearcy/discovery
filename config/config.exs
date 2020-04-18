@@ -36,9 +36,9 @@ if Mix.env() != :prod do
           "mix compile --warnings-as-errors",
           "mix xref deprecated --abort-if-any",
           "mix xref unreachable --abort-if-any",
+          "mix format",
           "mix format --check-formatted",
           "mix credo --config-file=.credo.exs list --all --strict --format=oneline",
-          "mix doctor --summary",
           "mix test"
         ]
       ]

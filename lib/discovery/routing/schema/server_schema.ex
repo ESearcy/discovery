@@ -1,4 +1,7 @@
 defmodule Discovery.Routing.Schemas.ServerSchema do
+  @moduledoc """
+  schema for servers that have registered with the application
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
