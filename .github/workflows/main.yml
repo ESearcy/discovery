@@ -40,7 +40,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Recover dependency cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: deps_cache
       with:
           path: deps
@@ -52,14 +52,14 @@ jobs:
             
     # Runs a set of commands using the runners shell
     - name: Recover build cache
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
           path: _build
           key: ${{ runner.OS }}-build-${{ env.cache-name }}
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
-    - uses: actions/setup-elixir@v1.0.0
+    - uses: actions/setup-elixir@v2
       with:
           otp-version: 22.x
           elixir-version: 1.9.x
