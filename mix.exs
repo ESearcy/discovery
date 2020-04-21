@@ -59,9 +59,19 @@ defmodule Discovery.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      setup_dev_env: ["git_hooks.install"],
+      "ecto.setup": ["setup_dev_env", "ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      quality_test: [
+        "clean",
+        "compile --warnings-as-errors",
+        "xref deprecated --abort-if-any",
+        "xref unreachable --abort-if-any",
+        "format",
+        "format --check-formatted",
+        "credo --config-file=.credo.exs list --all --strict --format=oneline"
+      ]
     ]
   end
 end
